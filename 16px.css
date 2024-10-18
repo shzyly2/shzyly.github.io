@@ -1,0 +1,91 @@
+h1{text-align:center;line-height:100%;margin:06px 0;font-size:16.5pt;font-family:shzyly-Hei;}
+h2{text-align:center;line-height:100%;margin:05px 0;font-size:15.0pt;font-family:shzyly-Hei;}
+h3{text-align:center;line-height:100%;margin:04px 0;font-size:13.5pt;font-family:shzyly-Hei;}
+h4{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+h5{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+h6{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+p{text-indent:2em;font-size:12.0pt;font-family:shzyly-Song;line-height:137.5%;margin:4px 0;}
+li{font-size:12.0pt;font-family:shzyly-Song;line-height:137.5%;}
+/*  */
+body{background-color:white;margin:0 auto;max-width:1300px;}
+p.yvan{font-size:09.0pt;text-align:right;line-height:100%;margin-left:4em;text-indent:0em;}
+p.p2{margin-left:2em;text-indent:2em;}
+p.p3{margin-left:4em;text-indent:2em;}
+p.pc{text-indent:0em;text-align:center;}
+p.pl{text-indent:2em;text-align:left;}
+p.pr{margin-left:2em;text-indent:2em;text-align:right;}
+p.pl0{text-indent:0em;text-align:left;}
+p.pr0{text-indent:0em;text-align:right;}
+p.pt{margin-left:2em;text-indent:0em;}
+p.pt2{margin-left:4em;text-indent:0em;}
+p.pj{text-indent:0em;text-align-last:justify;white-space:nowrap;}
+.s{font-size:09.0pt;}
+/*  */
+ul{margin:0 0;text-indent:1em;}
+ul.nav{list-style-type:none;margin:0;padding:0;overflow:hidden;background-color:white;text-align:center;display:block;border:1px solid black;}
+ol{margin:0 0;text-indent:1em;}
+ol.p{padding-left:2em;text-indent:0em;}
+ol.p p{margin-left:-2em;}
+ol.p div.div-p2{margin:0 auto;border-left: 1px solid black;margin-left:0em;}
+ol.p div.div-p2 p{margin-left:0em;}
+ol.p div.div-p2 p.yvan{font-size:09.0pt;text-align:right;line-height:100%;margin-left:4em;text-indent:0em;}
+li.nav{float:left;text-indent:0em;}
+li a.nav{display:block;color:black;text-align:center;padding:14px 30px;text-decoration:none;}
+li a:hover.nav{background-color:yellow;text-decoration:none;}
+/*  */
+img{border:1px solid black;max-width:100%;vertical-align:middle;}
+a img{border:1px solid;max-width:100%;vertical-align:middle;}
+audio{vertical-align:middle;min-width:30%;max-width:100%;}
+a{text-decoration:none;color:blue;}
+a:hover{text-decoration:underline;}
+table{margin:0 auto;}
+table.song{white-space:nowrap;}
+td.song{width:50%;}
+table.full{width:100%;}
+td p{margin:0 auto;line-height:100%;}
+td.space{min-width:32px;}
+/*  */
+div.clist{text-align:center;}
+div ol.clist{display:inline-block;text-align:left;}
+div.div-p2{margin:0 auto;border-left: 1px solid black;margin-left:2em;}
+/*  */
+.sans{font-family:shzyly-Hei;}
+.serif{font-family:shzyly-Song;}
+.fang{font-family:shzyly-Fang;}
+.kai{font-family:shzyly-Kai;}
+/*  */
+.red{color:red;}
+.orange{color:orangered;}
+.brown{color:saddlebrown;}
+.green{color:green;}
+.blue{color:blue;}
+.purple{color:purple;}
+.darkred{color:darkred;}
+.opacity{opacity:0.5;}
+/*  */
+.b-red{background-color:red;}
+.b-yellow{background-color:yellow;}
+.b-lime{background-color:lime;}
+.b-cyan{background-color:cyan;}
+/*  */
+.zhuo{text-shadow: 1px 1px 1.5px orangered;}
+.bian{margin:3px 0;line-height:137.5%;font-size:9pt;color:saddlebrown;}
+.jin{margin:3px 0;line-height:137.5%;font-size:9pt;color:purple;}
+.wai{opacity:0.5;}
+/*  */
+span.ge{text-decoration:underline;text-decoration-color:red;text-decoration-thickness:2px;}
+span.qi{text-decoration:underline;text-decoration-color:saddlebrown;text-decoration-thickness:2px;}
+span.li{text-decoration:underline;text-decoration-color:green;text-decoration-thickness:2px;}
+span.zi{text-decoration:underline;text-decoration-color:blue;text-decoration-thickness:2px;}
+span.zhe{text-decoration:underline;text-decoration-color:purple;text-decoration-thickness:2px;}
+div.ge{border-right: 5px solid red;}
+div.qi{border-right: 5px solid saddlebrown;}
+div.li{border-right: 5px solid green;}
+div.zi{border-right: 5px solid blue;}
+div.zhe{border-right: 5px solid purple;}
+/*  */
+article{display:grid;width:100%;min-height:100vh;}
+article div.s{place-self: start center;}
+article div.c{place-self: center center;}
+article div.e{place-self: end center;}
+.break{page-break-before:always;}

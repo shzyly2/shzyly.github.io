@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans-CN">
+<body>
+
+<h1>互联网电子文件分享</h1>
+<p class="pc">（更新于2024年10月14日。）</p>
+
+<h2>校验码</h2>
+<p>校验程序是一种用于判断两片数据是否一模一样的很简单的程序。</p>
+<p>校验程序读取文件的所有内容，并以此生成校验码。不同的文件，无论它们的差别有多么小，都会导致校验码大不相同。在数据接收完毕后，使用校验码可以验证传输的数据是否出现了差错。体积相同但内容不同的文件是可能有相同校验码的，但碰巧的概率小到让人忽略不计。例如“MD5”、“SHA1”、“SHA256”，这是三种“校验码”。</p>
+<p>●有些下载服务也会提供校验码下载，供用户手动验证下载的文件的完整无误性。但只要下载过程正常，就不用手动验证。</p>
+<p>●二维码自带校验码，所以扫描二维码后出来的结果总是准确的。如果校验结果不符，就不会呈现结果。</p>
+<p>●互联网服务器对用户登录密码通常并不原文存储，而是存储校验码。因为服务器不需要知道用户的密码具体是什么，只需要知道用户输入的密码是否与设置的密码一致。校验码属于单向加密（不可逆加密），所以在忘记密码后无法找回密码，只能修改密码，同时服务器又能检查你设置的新密码是否和原密码相同。这种设计使得服务器即使在数据泄漏时别人也无法修改用户存储在服务器上的内容。</p>
+<p>●你的存盘有每秒几百MiB的读取速度，但是你的网络上传速度只有每秒1 MiB。在这种情况下，如果你上传一个体积有4个GiB的文件到一个用于存储文件的大型互联网平台，按理来说需要上小时的时间，但有可能非常快地就“上传完毕”了。原理就是上传软件读取了整个文件并计算出了校验码，把文件体积和校验码上传给服务器，然后服务器发现自己已经有一个这样的文件，它的体积和校验码与待上传文件的一模一样——这个文件已经有别人上传过了，就不用再上传一次了。这个文件是你和其它人都有的，服务器就只需要存一份，并记下谁拥有这个文件（的下载权）。这节省了网络流量和存储空间。</p>
+<p>一个校验码当然只能放在生成它的内容之外。</p>
+<p>可能有些文件的主要内容看起来一模一样，但校验码不一样。结构越复杂的文件，越容易出现这种情况。例如：当你用同一个网页生成两份PDF文件时，它们会是不同的：因为它们在PDF文件的元数据里记录了不同的生成时间点；甚至，PDF本身就自带另一种识别码。例如：有的图像文件自带Exif信息，有的图像并没有，打开这两个图像，里面的每一个像素都一模一样，但校验码并不同。</p>
+
+<p>如果只是一般用户用来检查文件是否一致，那么MD5校验码就足够了，它是长度固定的十六进制数组成的字符串，不算太长。</p>
+
+<h2>打包和压缩</h2>
+<p>用有的写法可以在表达相同含义的同时减少占用的空间，例如“100000000”可以表示为“一亿”。电子文件的压缩的原理类似于此。</p>
+<p>打包软件可以把一个或多个文件连同文件夹打包成一个文件，同时可以压缩它们，也可以加密它们。但作为通用压缩而非专用压缩，当要使用里面的文件时就必须把里面的文件取出来才能用；如果是多个文件配合才有用的情况下，就必须把它们都取出来。因此，虽然打包软件在打开文件包时的界面像是个普通的文件管理器，但不能直接打开里面的文件，必须经过一个将文件取出来的过程；当试图直接打开文件包里面的文件时，打包软件常常是临时地把它取出来并打开，因此作出的修改不会被保存。在文件包里调整任何内容都要导致整个文件包重新打包，很麻烦，因此不要把要经常改变的文件打包。</p>
+<p>由于：</p>
+<p>●许多常见格式的电子文件（文档文件、媒体文件（音频、视频、图画）、软件包）都自带压缩。对已经压缩过了的文件再次压缩是没有什么正面效果的。</p>
+<p>●压缩力度越大，压缩时和解压时耗费的时间、电量、运行内存就越多。</p>
+<p>●很小的压缩力度就已经能产生很好的效果了。稍大一点都不会产生明显更好的减小体积的效果。</p>
+
+<p>因此，如果目的只是把多个文件打包成一个文件，那么在选择压缩力度时，应当选择“无压缩”，这也是最快捷的做法。如果目的是要压缩文件体积，那么也只有在要打包的文件中文本文件占用较多体积的时候才有必要这么做，同时应该选择最小的压缩力度，再大一点都没有明显更好的效果。</p>
+<p>应当了解的文件包格式有：zip、7z。其中zip加密时只能加密文件内容而文件目录仍能查看，7z加密时可以同时加密文件目录（在输入正确的密码前什么也看不到）。在压缩方面没有值得一提的区别，它们都可以在多种压缩算法中择一使用。</p>
+<p>应当了解的压缩算法有：“Deflate”系列、“LZMA”系列。其中Deflate是最普通的。</p>
+<p>普通用户很少有必要用LZMA。LZMA占用的运行资源更大，只有在要压缩的文件中有大量体积大的重复内容的时候才有比Deflate明显更好的效果。例如，有很多个音乐文件，它们自带相同的封面图，那么把它们用LZMA压缩就可以省下重复的封面图所占用的更多空间。单个重复内容的体积越大，就要选择更大的压缩力度，但对普通用户而言不应当超过“中等”力度。可是话又说回来：如果重复内容太多，用户就有必要自己整理那些文件，依赖LZMA压缩是不好的做法。</p>
+<p>要传输多个文件时，尤其是给无组织性的人们传输时，通常要打包，因为传输一个文件包总比传输多个文件要方便，省步骤。在大批量分享文件时，也要注意权衡分类打包、文件包的数量、体积。除了本来就特别大的文件以外，一个文件包的体积以不超过2 GiB为宜。</p>
+<p>利用打包软件的分卷功能可以把一个大文件拆成几个小文件来存储和传输，但这种行为常常引来更多麻烦，就和把总体积太大的文件都打成一个包一样麻烦——就算你只想取出其中一个文件，也得把整个文件包下载完成。</p>
+<p></p>
+
+<h2>7z加密传递文件</h2>
+
+<p>加密可以解决敌人识别文件内的敏感字词的问题。一个互联网平台，只要它允许发送加密的文件（也就是它不能识别内容的文件），那么，它实际上就可以用来传递任何内容。</p>
+<p>文件被大量举报也会被封禁，此时敌人是通过校验码来识别文件的，因此，即使是加密的文件，只要被封禁了，那么删除后重新上传就是同样无效的。不过，如果加密文件因遭到的举报数量够多而被封禁，那么也就说明文件的传播范围够广了，影响够大了。</p>
+<p>再次打包非常容易改变校验码。以下因素的变化都可以改变文件包的校验码：</p>
+<p>●其中任何一个文件或文件夹的名字、位置，以及它们的数量。也就是说，目录信息。</p>
+<p>●系统为其中任何一个文件或文件夹所记录的修改时间点，文件包也会记录。</p>
+<p>所以，如果你的打包软件在解包时会将系统为文件夹或文件记录的修改时间点调到现在，那么你在解包文件后直接再次以完全相同的打包参数再次打包，都能改变校验码。</p>
+<p>你还可以在打包前加入一个空文件。如果本来就已经有一个空文件了，那么你可以删除后再创建它；或者填一个字符后保存，再删空成空文件；或者修改文件名为现在的时间点。</p>
+<p>设置不同的解包密码可以极大地改变文件包的表面内容的重复率，也就是外表上的相似程度，也能改变校验码，但只有对文件传输的审查严格得过分的时候（通过比较文件的相似程度来封禁时）才有必要通过改密码的方式来规避审查。</p>
+<p>调整压缩力度或修改原本文件的内容也可以改变校验码，但这两种做法是最差的，造成的麻烦比带来的便利更多。</p>
+<p>在互联网通讯平台上分享时，可以将密码写在文件名上。因为，通过文件名来封禁文件是很愚蠢的设计。如果哪个通讯平台会检测文件名里的内容的话，那么你就不应该用这个通讯平台。</p>
+<p>如果只是根据校验码来识别封禁文件的，那么有些文件不使用打包加密也可以规避封禁，例如图片，例如PDF文档，在它们的元数据里随意添加或修改什么内容，就可以改变校验码。</p>
+<p></p>
+
+<h2>陷阱</h2>
+<p>内容完全单调的文件，或内容完全重复的许多文件，压缩效果会极高，因此可以做成气爆弹。如果取出来，那么就会白白占用过多存盘空间，对电存盘会减少使用寿命，对磁存盘会拖慢运行速度，还可能多占用处理器运行资源、多费电。在解压来源不可信任的压缩包之前，要检查包内文件的总共体积。</p>
+<p>如果谁发送给了你一个加密文件包，但没有告诉你密码，那只能说明它本来就不想给你分享文件，或者它想收费，要你承担受欺诈的风险。不要想着硬磨破解这种加密文件包，这是徒劳的。</p>
+<p></p>
+
+<h2>软件推荐</h2>
+
+<p>无论你是iOS用户还是Android用户，你都需要一个专门的，不简陋的，能让你调节具体的打包选项的文件打包软件。</p>
+<table><tr>
+<td><p class="pc"><a class="orange" href="https://zdevs.ru/en/za/apk.html" target="_blank"><img src="
+data:image/webp;base64,
+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
+" width="80px"/><br/>ZArchiver</a></p></td>
+
+<td>
+<p><a class="orange" href="https://zdevs.ru/en/za/apk.html" target="_blank">https://zdevs.ru/en/za/apk.html</a></p>
+<p>它是个打包软件的同时也是个合格的文件管理器。</p>
+<p>支持计算MD5校验码。</p>
+<p>在官方网站的下载页选择一个名字以“ARMv7”结尾的下载项目即可。它的安装包很小，不到10 MiB，不要下载到盗版。</p>
+</td>
+</tr></table>
+
+<p>选中文件后，不要选择“压缩到*.7z”的快捷操作，而是要选择“压缩…”以调整详细的参数选项。要记得选择正确的选项来执行操作。“加密”选项应当选择“数据和文件名（AES-256）”，再输入要设置的密码。压缩力度应选择“无压缩”。</p>
+<p>至于Microsoft Windows上的打包软件，在我们的网站上有推荐和教程，不置入此书。</p>
+<p></p>
+
+<h2>公共寄存服务</h2>
+<p>互联网上有许多无需注册，即时使用的文件寄存服务。将文件上传后就得到一个分享链接，将链接发给别人，别人就可以下载。虽然这些下载服务往往是短期的或有次数限制的，有的还有商业广告，但已经足够用了。也有的服务根据是否还有人下载来决定是否要在服务器上继续保留，没人下载就会被删除，这特别适合分享恶性的社会事件。</p>
+<p>XMPP算是一个例子，尽管它实际上是即时通讯服务而不是文件寄存服务，但通过它寄存的文件是直接下载链接，即使是不使用XMPP的人，拿到了也可以下载。</p>
+<p>另一个例子是“Firefox Send”（也被称为“ffsend”），火狐浏览器的开发方所开发的文件寄存服务，有期限和下载次数限制。它的结果是注定的：因为有人上传让一些人不满意的东西，遭到了舆论压力，而放弃了这东西。于是现在开办这个服务的是其它的志愿者们。你可以在这个网址找到一些公共服务器：“<a class="orange" href="https://github.com/timvisee/send-instances/" target="_blank">https://github.com/timvisee/send-instances/</a>”。它的一个缺点是在上传时不能断点续传，上传中断即失去所有上传进度，所以你要测试连接的稳定性和上传速度，不要选择上传太慢的，也不要选择连接不稳定的。对容易上传中断的而言，只能上传小文件。</p>
+<p>如果要选择其它的文件寄存服务，那么有商业广告不是不能接受，除非对下载的误导性太强或有弹窗广告。</p>
+<p>如果想要寄存的文件长期有效，也可以选择需要注册虚拟身份的互联网服务。但不应当对下载者而言太难用。</p>
+<p>如果要分享违法的文件，那么不要选择遵守国内法律的文件寄存服务，而要选择违抗国内法律的文件寄存服务，或者本来就不服从国内法律的外国的文件寄存服务（当然不能是傀儡国的）。</p>
+<p></p>
+
+<h2>附加教学工作</h2>
+<p>如果别人找不到文件的下载位置，你就需要告诉别人自己的文件下载到了什么位置。</p>
+<p>如果别人访问不了下载链接，那么就要告诉它们使用国际通用的网页浏览器，不要使用中国专用的。</p>
+<p>如果别人不懂解压缩，那么还要教它们怎么解压缩。</p>
+<p></p>
+
+<table><tr>
+<td><p class="pc">
+<svg width="4cm" viewBox="0 0 211.66666 132.29167" version="1.1" id="svg8" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs id="defs2"/><metadata id="metadata5"><rdf:RDF><cc:Work rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/></cc:Work></rdf:RDF></metadata>
+<rect style="fill:#ffffff;stroke-width:2.97882;stroke-linejoin:round" id="rect901" width="211.66667" height="132.29167" x="7.1054274e-15" y="-3.5527137e-15"/>
+<g id="g4117"><path id="rect18" style="fill:#000000;fill-rule:evenodd;stroke-width:0.26787" d="M 184.54687 0 L 184.54687 132.29167 L 211.66667 132.29167 L 211.66667 0 L 184.54687 0 z M 185.86979 1.3229167 L 210.34375 1.3229167 L 210.34375 130.96875 L 185.86979 130.96875 L 185.86979 1.3229167 z "/>
+<path id="rect1681" style="display:inline;fill:#000000;stroke:none;stroke-width:5.39375;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" d="M 0,15.875 V 132.29167 H 185.86979 V 15.875 Z m 1.3229167,1.322917 H 184.54687 V 130.96875 H 1.3229167 Z"/>
+<path id="rect2624" style="display:inline;fill:#000000;stroke:none;stroke-width:2.17926;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" d="M 0,0 V 17.197917 H 185.86979 V 0 Z M 1.3229167,1.3229167 H 184.54687 V 15.875 H 1.3229167 Z"/></g>
+<g style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:3.47011705;stroke-dasharray:none;stroke-linecap:butt;stroke-linejoin:round" id="g2900" transform="matrix(0.38172934,0,0,0.38073358,16.911722,3.5201507)">
+<path id="rect4165-6" d="m 137.43744,171.69421 18.86296,18.9937 17.78834,-17.66589 c 27.05847,29.021 55.43807,56.99501 82.28704,86.12782 4.03444,4.06233 10.59815,4.085 14.66056,0.0506 4.06232,-4.03445 4.08499,-10.59815 0.0506,-14.66056 -28.81871,-27.1901 -57.72545,-54.60143 -86.55328,-81.89095 l 23.96499,-23.80003 -33.34026,-4.61605 z" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.47011705;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stroke-linecap:butt;stroke-linejoin:round"/>
+<path id="path4179-3" d="m 198.2887,110.1955 c 15.51743,8.7394 27.29872,21.28122 34.2484,34.3924 7.04394,13.28902 10.13959,27.16218 10.20325,38.25433 0.13054,22.74374 -18.43771,41.18184 -41.18183,41.18184 -12.13597,0 -23.04607,-5.24868 -30.58302,-13.60085 l -4.16863,3.51033 c -0.70999,-0.27231 -1.46387,-0.41221 -2.22429,-0.41276 -1.82948,1.9e-4 -3.56621,0.80531 -4.74859,2.20136 -2.97368,0.38896 -5.46251,2.44529 -6.40534,5.29224 -3.13486,6.28843 -8.63524,11.21997 -15.29104,13.4776 -0.0637,0.0216 -0.11992,0.05 -0.1758,0.0783 -3.07749,1.12758 -6.16259,3.1643 -8.78919,5.80245 -5.19155,5.23656 -7.72858,11.93658 -6.30024,16.63822 -0.14098,0.40857 -0.21361,0.83759 -0.21498,1.26979 1.5e-4,2.17082 1.75991,3.93058 3.93073,3.93073 0.54341,-0.002 1.08053,-0.11639 1.57745,-0.33632 4.69369,1.05881 11.06885,-1.54582 16.05444,-6.55917 2.82624,-2.85072 4.94356,-6.22349 5.98303,-9.53062 2.31696,-6.62278 7.29699,-12.01856 13.62281,-15.05312 0.15105,-0.0725 0.27303,-0.14714 0.38218,-0.22358 2.12082,-1.01408 3.67251,-2.92895 4.225,-5.2139 9.70222,11.44481 24.25255,18.75299 40.51876,19.13577 29.83352,0.70205 52.13299,-21.25802 53.16414,-52.83642 0.51894,-15.89259 -5.62993,-36.3847 -19.6412,-53.19089 -10.70835,-12.84441 -26.40987,-23.50795 -44.18699,-28.20777 z" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.47011705;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stroke-linecap:butt;stroke-linejoin:round"/></g>
+<path id="path11728" d="M 92.604155,7.2683716e-7 90.551825,6.3163837 h -6.64139 l 5.37299,3.9036923 -2.05233,6.316382 5.37306,-3.903766 5.37306,3.903766 -2.05233,-6.316382 5.372995,-3.9036923 h -6.641395 z m 0,3.29080897316284 1.31347,4.042453 h 4.25055 l -3.43877,2.498458 1.31346,4.0424523 -3.43871,-2.498387 -3.43871,2.498387 1.31347,-4.0424523 -3.43878,-2.498458 h 4.25055 z" style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0365646px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"/></svg>
+
+</p></td>
+<td>
+<p class="pc"><a class="green" href="https://shzyly.rf.gd/" target="_blank">https://shzyly.rf.gd/</a></p>
+<p class="pc"><a class="red" href="https://shzyly.bitbucket.io/" target="_blank">https://shzyly.bitbucket.io/</a></p>
+<p class="pc"><a class="green" href="https://shzyly.github.io/" target="_blank">https://shzyly.github.io/</a></p>
+<p class="pc"><span class="kai"><strong>金星革命委员会</strong></span></p>
+</td>
+</tr>
+</table>
+<p>政治版权保护声明：非马克思列宁主义者使用此书册，最高可被判处三十年惩戒营劳役。</p>
+
+</body>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<title>互联网电子文件分享</title>
+<style type="text/css">
+h1{text-align:center;line-height:100%;margin:06px 0;font-size:16.5pt;font-family:shzyly-Hei;}
+h2{text-align:center;line-height:100%;margin:05px 0;font-size:15.0pt;font-family:shzyly-Hei;}
+h3{text-align:center;line-height:100%;margin:04px 0;font-size:13.5pt;font-family:shzyly-Hei;}
+h4{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+h5{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+h6{text-align:center;line-height:100%;margin:03px 0;font-size:12.0pt;font-family:shzyly-Hei;}
+p{text-indent:2em;font-size:12.0pt;font-family:shzyly-Song;line-height:137.5%;margin:4px 0;}
+li{font-size:12.0pt;font-family:shzyly-Song;line-height:137.5%;}
+/*  */
+body{background-color:white;margin:0 auto;max-width:1300px;}
+p.yvan{font-size:09.0pt;text-align:right;line-height:100%;margin-left:4em;text-indent:0em;}
+p.p2{margin-left:2em;text-indent:2em;}
+p.p3{margin-left:4em;text-indent:2em;}
+p.pc{text-indent:0em;text-align:center;}
+p.pl{text-indent:2em;text-align:left;}
+p.pr{margin-left:2em;text-indent:2em;text-align:right;}
+p.pl0{text-indent:0em;text-align:left;}
+p.pr0{text-indent:0em;text-align:right;}
+p.pt{margin-left:2em;text-indent:0em;}
+p.pt2{margin-left:4em;text-indent:0em;}
+p.pj{text-indent:0em;text-align-last:justify;white-space:nowrap;}
+.s{font-size:09.0pt;}
+/*  */
+ul{margin:0 0;text-indent:1em;}
+ul.nav{list-style-type:none;margin:0;padding:0;overflow:hidden;background-color:white;text-align:center;display:block;border:1px solid black;}
+ol{margin:0 0;text-indent:1em;}
+ol.p{padding-left:2em;text-indent:0em;}
+ol.p p{margin-left:-2em;}
+ol.p div.div-p2{margin:0 auto;border-left: 1px solid black;margin-left:0em;}
+ol.p div.div-p2 p{margin-left:0em;}
+ol.p div.div-p2 p.yvan{font-size:09.0pt;text-align:right;line-height:100%;margin-left:4em;text-indent:0em;}
+li.nav{float:left;text-indent:0em;}
+li a.nav{display:block;color:black;text-align:center;padding:14px 30px;text-decoration:none;}
+li a:hover.nav{background-color:yellow;text-decoration:none;}
+/*  */
+img{border:1px solid black;max-width:100%;vertical-align:middle;}
+a img{border:1px solid;max-width:100%;vertical-align:middle;}
+audio{vertical-align:middle;min-width:30%;max-width:100%;}
+a{text-decoration:none;color:blue;}
+a:hover{text-decoration:underline;}
+table{margin:0 auto;}
+table.song{white-space:nowrap;}
+td.song{width:50%;}
+table.full{width:100%;}
+td p{margin:0 auto;line-height:100%;}
+td.space{min-width:32px;}
+/*  */
+div.clist{text-align:center;}
+div ol.clist{display:inline-block;text-align:left;}
+div.div-p2{margin:0 auto;border-left: 1px solid black;margin-left:2em;}
+/*  */
+.sans{font-family:shzyly-Hei;}
+.serif{font-family:shzyly-Song;}
+.fang{font-family:shzyly-Fang;}
+.kai{font-family:shzyly-Kai;}
+/*  */
+.red{color:red;}
+.orange{color:orangered;}
+.brown{color:saddlebrown;}
+.green{color:green;}
+.blue{color:blue;}
+.purple{color:purple;}
+.darkred{color:darkred;}
+.opacity{opacity:0.5;}
+/*  */
+.b-red{background-color:red;}
+.b-yellow{background-color:yellow;}
+.b-lime{background-color:lime;}
+.b-cyan{background-color:cyan;}
+/*  */
+.zhuo{text-shadow: 1px 1px 1.5px orangered;}
+.bian{margin:3px 0;line-height:137.5%;font-size:9pt;color:saddlebrown;}
+.jin{margin:3px 0;line-height:137.5%;font-size:9pt;color:purple;}
+.wai{opacity:0.5;}
+/*  */
+span.ge{text-decoration:underline;text-decoration-color:red;text-decoration-thickness:2px;}
+span.qi{text-decoration:underline;text-decoration-color:saddlebrown;text-decoration-thickness:2px;}
+span.li{text-decoration:underline;text-decoration-color:green;text-decoration-thickness:2px;}
+span.zi{text-decoration:underline;text-decoration-color:blue;text-decoration-thickness:2px;}
+span.zhe{text-decoration:underline;text-decoration-color:purple;text-decoration-thickness:2px;}
+div.ge{border-right: 5px solid red;}
+div.qi{border-right: 5px solid saddlebrown;}
+div.li{border-right: 5px solid green;}
+div.zi{border-right: 5px solid blue;}
+div.zhe{border-right: 5px solid purple;}
+/*  */
+article{display:grid;width:100%;min-height:100vh;}
+article div.s{place-self: start center;}
+article div.c{place-self: center center;}
+article div.e{place-self: end center;}
+.break{page-break-before:always;}
+</style>
+</head>
+</html>
